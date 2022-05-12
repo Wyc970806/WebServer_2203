@@ -17,6 +17,13 @@ public class ClientHandler implements Runnable{
     @Override
     public void run() {
         try {
+            /*
+                测试路径:
+                http://localhost:8088
+
+                切记!不要用https://localhost:8088
+                否则读取的内容是乱码!
+             */
             InputStream in = socket.getInputStream();
             int d;
             while((d = in.read()) != -1){
