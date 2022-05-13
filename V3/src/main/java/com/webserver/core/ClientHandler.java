@@ -28,7 +28,7 @@ public class ClientHandler implements Runnable{
             //使用StringBuilder用于拼接每一个读取到的字符，并最终组成一个字符串使用
             StringBuilder builder = new StringBuilder();
             int d;//记录每次读取到的字节
-            char cur = 'a';//表示本次读取到的字符
+            char cur = 'a';//表示本次读取到的字符  10:30回来继续
             char pre = 'a';//表示上次读取到的字符
             while((d = in.read()) != -1){
                 cur = (char)d;//将本次读取到的字节转换为char记录
@@ -42,7 +42,16 @@ public class ClientHandler implements Runnable{
             String line = builder.toString().trim();
             System.out.println("请求行内容:"+line);
 
+            //请求行相关信息
+            String method;//请求方式
+            String uri;//抽象路径
+            String protocol;//协议版本
 
+
+            //测试路径:http://localhost:8088/myweb/index.html
+            System.out.println("method:"+method);//method:GET
+            System.out.println("uri:"+uri);//uri:/myweb/index.html
+            System.out.println("protocol:"+protocol);//protocol:HTTP/1.1
 
 
         } catch (IOException e) {
