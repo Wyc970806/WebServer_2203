@@ -32,7 +32,7 @@ public class ClientHandler implements Runnable{
             String[] data = line.split("\\s");
 //            String[] data = line.split(" ");//直接按照空格拆分也行
             method = data[0];
-            uri = data[1];
+            uri = data[1];//这里可能出现数组下标越界异常:ArrayIndexOutOfBoundsException,这是由于浏览器发送了空请求导致的，解决办法:换一个浏览器请求试试
             protocol = data[2];
             //测试路径:http://localhost:8088/myweb/index.html
             System.out.println("method:"+method);//method:GET
@@ -53,6 +53,7 @@ public class ClientHandler implements Runnable{
                 headers.put(data[0],data[1]);
                 System.out.println("消息头:" + line);
             }
+
             System.out.println("headers:"+headers);
 
 
