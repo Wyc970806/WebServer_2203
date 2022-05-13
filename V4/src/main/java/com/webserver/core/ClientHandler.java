@@ -38,9 +38,16 @@ public class ClientHandler implements Runnable{
             System.out.println("protocol:"+protocol);//protocol:HTTP/1.1
 
             //解析消息头
-            line = readLine();
-            System.out.println("消息头:"+line);
-
+            while(true) {
+                line = readLine();
+                //读取消息头时，如果readLine方法返回空字符串，说明单独读取了CRLF
+                if(line.isEmpty()){
+//                if("".equals(line)){
+//                if(line.length()==0){
+                    break;
+                }
+                System.out.println("消息头:" + line);
+            }
 
 
         } catch (IOException e) {
