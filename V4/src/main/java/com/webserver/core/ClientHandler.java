@@ -3,6 +3,8 @@ package com.webserver.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 该任务负责与指定的客户端进行HTTP交互
@@ -38,16 +40,21 @@ public class ClientHandler implements Runnable{
             System.out.println("protocol:"+protocol);//protocol:HTTP/1.1
 
             //解析消息头
+            //这个Map存所有消息头，key为消息头的名字 value为消息头的值
+            Map<String,String> headers = new HashMap<>();
             while(true) {
                 line = readLine();
                 //读取消息头时，如果readLine方法返回空字符串，说明单独读取了CRLF
                 if(line.isEmpty()){
-//                if("".equals(line)){
-//                if(line.length()==0){
                     break;
                 }
+                //将消息头按照冒号空格拆分为名字和对应的值，并作为key，value存入headers
+                data = line.split(":\\s");
+                headers.put(data[0],data[1]);
                 System.out.println("消息头:" + line);
             }
+            System.out.println("headers:"+headers);
+
 
 
         } catch (IOException e) {
