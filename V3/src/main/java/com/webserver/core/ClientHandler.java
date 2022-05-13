@@ -47,7 +47,12 @@ public class ClientHandler implements Runnable{
             String uri;//抽象路径
             String protocol;//协议版本
 
-
+            //将请求行按照空格拆分为三部分，并分别用上述三个变量保存
+            String[] data = line.split("\\s");
+//            String[] data = line.split(" ");//直接按照空格拆分也行
+            method = data[0];
+            uri = data[1];
+            protocol = data[2];
             //测试路径:http://localhost:8088/myweb/index.html
             System.out.println("method:"+method);//method:GET
             System.out.println("uri:"+uri);//uri:/myweb/index.html
