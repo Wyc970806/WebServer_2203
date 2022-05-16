@@ -20,12 +20,32 @@
                     password:密码框
         <a>:超链接，标签中间的文本是超链接对应的文字，属性href用于指定跳转的路径
         <br>:换行
+        <table>标签:表格。属性border用于指定边框。
+                    <table>标签中包含<tr>标签用于表示行
+                    <tr>标签中包含<td>标签用于表示列
+                    <td>标签中常见属性:
+                    align:对其方式。left左对齐,right右对齐,center剧中对其
+                    colspan:跨列合并列，合并是从左向右合并列
+                    rowspan:跨行合并列，合并是从上向下合并列
+
     -->
     <center>
         <h1>百度</h1>
         <input type="text">
         <input type="button" value="百度一下"><br>
         <a href="http://www.taobao.com">淘宝</a>
+        <table border="1">
+            <tr>
+                <td>第一列</td>
+                <td rowspan="2">第二列</td>
+                <td colspan="2" align="center">第三列</td>
+            </tr>
+            <tr>
+                <td>第一列</td>
+                <td>第三列</td>
+                <td>第四列</td>
+            </tr>
+        </table>
     </center>
 </body>
 </html>
