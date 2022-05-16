@@ -104,4 +104,19 @@ public class HttpServletRequest {
         return builder.toString().trim();
     }
 
+    public String getMethod() {
+        return method;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public String getHeader(String name) {
+        return headers.get(name);
+    }
 }
