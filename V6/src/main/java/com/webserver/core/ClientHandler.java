@@ -26,7 +26,7 @@ public class ClientHandler implements Runnable{
             HttpServletRequest request = new HttpServletRequest(socket);
 
             //2 处理请求
-
+            String path = request.getUri();
 
             //3 发送响应
             //这里相当于定位的是当前项目下的resources目录
@@ -42,9 +42,13 @@ public class ClientHandler implements Runnable{
             File staticDir = new File(rootDir,"static");
 
             //定位页面: resources/static/myweb/index.html
-            File file = new File(staticDir,"/myweb/index.html");
+//            File file = new File(staticDir,"/myweb/index.html");
 
+            File file = new File(staticDir,path);
             /*
+                http://localhost:8088/myweb/index.html
+                http://localhost:8088/myweb/classTable.html
+
                 HTTP/1.1 200 OK(CRLF)
                 Content-Type: text/html(CRLF)
                 Content-Length: 2546(CRLF)(CRLF)
@@ -66,6 +70,8 @@ public class ClientHandler implements Runnable{
             while((len = fis.read(data))!=-1){
                 out.write(data,0,len);
             }
+
+            System.out.println("响应发送完毕!!!!!!!!!!!!!!!!");
 
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
