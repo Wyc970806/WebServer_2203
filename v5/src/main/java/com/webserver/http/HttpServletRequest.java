@@ -115,7 +115,7 @@ public class HttpServletRequest {
     public String getProtocol() {
         return protocol;
     }
-
+    //11:20回来
     public String getHeader(String name) {
         return headers.get(name);
     }
