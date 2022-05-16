@@ -12,52 +12,68 @@ import java.util.Map;
  * 一个请求由三部分构成:
  * 请求行，消息头，消息正文
  *
- *
- * 10:10回来继续
  */
 public class HttpServletRequest {
     private Socket socket;
 
+    //请求行相关信息
+    private String method;//请求方式
+    private String uri;//抽象路径
+    private String protocol;//协议版本
+
+    //消息头相关信息
+    //这个Map存所有消息头，key为消息头的名字 value为消息头的值
+    private Map<String,String> headers = new HashMap<>();
+
+
     public HttpServletRequest(Socket socket) throws IOException {
         this.socket = socket;
-
         //解析请求行
+        parseRequestLine();
+        //解析消息头
+        parseHeaders();
+        //解析消息正文
+        parseContent();
+
+    }
+
+    /**
+     * 解析请求行
+     */
+    private void parseRequestLine() throws IOException {
         String line = readLine();
         System.out.println("请求行内容:"+line);
-
-        //请求行相关信息
-        String method;//请求方式
-        String uri;//抽象路径
-        String protocol;//协议版本
-
         //将请求行按照空格拆分为三部分，并分别用上述三个变量保存
         String[] data = line.split("\\s");
-//            String[] data = line.split(" ");//直接按照空格拆分也行
         method = data[0];
         uri = data[1];//这里可能出现数组下标越界异常:ArrayIndexOutOfBoundsException,这是由于浏览器发送了空请求导致的，解决办法:换一个浏览器请求试试
         protocol = data[2];
-        //测试路径:http://localhost:8088/myweb/index.html
-        System.out.println("method:"+method);//method:GET
-        System.out.println("uri:"+uri);//uri:/myweb/index.html
-        System.out.println("protocol:"+protocol);//protocol:HTTP/1.1
 
-        //解析消息头
-        //这个Map存所有消息头，key为消息头的名字 value为消息头的值
-        Map<String,String> headers = new HashMap<>();
+        System.out.println("method:"+method);
+        System.out.println("uri:"+uri);
+        System.out.println("protocol:"+protocol);
+    }
+    /**
+     * 解析消息头
+     */
+    private void parseHeaders() throws IOException {
         while(true) {
-            line = readLine();
-            //读取消息头时，如果readLine方法返回空字符串，说明单独读取了CRLF
+            String line = readLine();
             if(line.isEmpty()){
                 break;
             }
-            //将消息头按照冒号空格拆分为名字和对应的值，并作为key，value存入headers
-            data = line.split(":\\s");
+            String[] data = line.split(":\\s");
             headers.put(data[0],data[1]);
             System.out.println("消息头:" + line);
         }
-
         System.out.println("headers:"+headers);
     }
+    /**
+     * 解析消息正文
+     */
+    private void parseContent(){}
+
+
 
     /**
      * 被解析请求的逻辑复用的方法，目的:读取一行字符串(以CRLF结尾的)
