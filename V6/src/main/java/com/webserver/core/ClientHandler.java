@@ -29,6 +29,17 @@ public class ClientHandler implements Runnable{
             String path = request.getUri();
 
             //3 发送响应
+            /*
+                定义为resource目录(maven项目中src/main/java和src/main/resources实际上是一个目录)
+                只不过java目录中存放的都是.java的源代码文件
+                而resources目录下存放的就是非.java的其他程序中需要用到的资源文件
+
+                实际开发中，我们在定位目录时，常使用相对路径，而实际应用的相对路径都是类加载路径
+                类加载路径可以用:
+                类名.class.getClassLoader().getResource(".")就是类加载路径
+                这里可以理解为时src/main/java目录或src/main/resources
+                实际表达的是编译后这两个目录最终合并的target/classes目录。
+             */
             //这里相当于定位的是当前项目下的resources目录
             File rootDir = new File(
                     ClientHandler.class.getClassLoader()
@@ -38,6 +49,7 @@ public class ClientHandler implements Runnable{
                 定位resources下的static目录
                 注:resources下的static目录是sprint boot项目中用于存放所有静态资源
                   的目录，相当于我们写的"网站"中用到的页面，图片等资源都放在static下
+
              */
             File staticDir = new File(rootDir,"static");
 
