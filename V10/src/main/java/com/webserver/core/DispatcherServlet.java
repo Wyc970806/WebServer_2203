@@ -26,7 +26,11 @@ public class DispatcherServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response){
         String path = request.getUri();
-
+        /*
+            http://localhost:8088/myweb/index.html
+            path:/myweb/index.html
+            总是去static目录下顺着path指定的路径定位文件的
+         */
         File file = new File(staticDir,path);
 
         if(file.isFile()){//file表示的是否为一个文件
