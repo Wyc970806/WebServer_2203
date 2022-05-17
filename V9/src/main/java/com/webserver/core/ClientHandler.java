@@ -28,23 +28,7 @@ public class ClientHandler implements Runnable{
             HttpServletResponse response = new HttpServletResponse(socket);
 
             //2 处理请求
-            String path = request.getUri();
-            File rootDir = new File(
-                    ClientHandler.class.getClassLoader()
-                            .getResource(".").toURI()
-            );
-            File staticDir = new File(rootDir,"static");
-            File file = new File(staticDir,path);
 
-            if(file.isFile()){//file表示的是否为一个文件
-                response.setContentFile(file);
-
-            }else{//file表示的是一个目录或file表示的路径并不存在
-                response.setStatusCode(404);
-                response.setStatusReason("NotFound");
-                file = new File(staticDir,"/root/404.html");
-                response.setContentFile(file);
-            }
 
             //3 发送响应
             response.response();
