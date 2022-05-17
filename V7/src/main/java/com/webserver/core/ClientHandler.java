@@ -27,45 +27,32 @@ public class ClientHandler implements Runnable{
 
             //2 处理请求
             String path = request.getUri();
-
-            //3 发送响应
-            //这里相当于定位的是当前项目下的resources目录
             File rootDir = new File(
                     ClientHandler.class.getClassLoader()
                             .getResource(".").toURI()
             );
-            /*
-                定位resources下的static目录
-                注:resources下的static目录是sprint boot项目中用于存放所有静态资源
-                  的目录，相当于我们写的"网站"中用到的页面，图片等资源都放在static下
-             */
             File staticDir = new File(rootDir,"static");
-
-            //定位页面: resources/static/myweb/index.html
-//            File file = new File(staticDir,"/myweb/index.html");
-
             File file = new File(staticDir,path);
-            /*
-                http://localhost:8088/myweb/index.html
-                http://localhost:8088/myweb/classTable.html
 
-                http://localhost:8088/
-                http://localhost:8088/myweb/
-                http://localhost:8088/myweb/123.html
+            int statusCode;//状态代码
+            String statusReason;//状态描述
+            if(file.isFile()){//file表示的是否为一个文件
+                statusCode = 200;
+                statusReason = "OK";
 
-                HTTP/1.1 200 OK(CRLF)
-                Content-Type: text/html(CRLF)
-                Content-Length: 2546(CRLF)(CRLF)
-                1011101010101010101......
-             */
+            }else{//file表示的是一个目录或file表示的路径并不存在
+                statusCode = 404;
+                statusReason = "NotFound";
+                file = new File(staticDir,"/root/404.html");
+            }
+
+            //3 发送响应
             //发送状态行
-            println("HTTP/1.1 200 OK");
-
+            println("HTTP/1.1" + " " + statusCode + " " + statusReason);
             //发送响应头
             println("Content-Type: text/html");
             println("Content-Length: "+file.length());
             println("");
-
             //发送响应正文
             FileInputStream fis = new FileInputStream(file);
             OutputStream out = socket.getOutputStream();
