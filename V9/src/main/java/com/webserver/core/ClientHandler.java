@@ -28,14 +28,15 @@ public class ClientHandler implements Runnable{
             HttpServletResponse response = new HttpServletResponse(socket);
 
             //2 处理请求
-
+            DispatcherServlet servlet = new DispatcherServlet();
+            servlet.service(request,response);
 
             //3 发送响应
             response.response();
 
             System.out.println("响应发送完毕!!!!!!!!!!!!!!!!");
 
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
