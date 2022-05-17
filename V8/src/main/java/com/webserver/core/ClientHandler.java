@@ -36,7 +36,6 @@ public class ClientHandler implements Runnable{
             File staticDir = new File(rootDir,"static");
             File file = new File(staticDir,path);
 
-
             if(file.isFile()){//file表示的是否为一个文件
                 response.setContentFile(file);
 

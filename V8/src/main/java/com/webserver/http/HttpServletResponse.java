@@ -1,9 +1,6 @@
 package com.webserver.http;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
@@ -34,18 +31,33 @@ public class HttpServletResponse {
      */
     public void response() throws IOException {
         //发送状态行
-        println("HTTP/1.1" + " " + statusCode + " " + statusReason);
+        sendStatusLine();
         //发送响应头
+        sendHeaders();
+        //发送响应正文
+        sendContent();
+    }
+    //发送状态行
+    private void sendStatusLine() throws IOException {
+        println("HTTP/1.1" + " " + statusCode + " " + statusReason);
+    }
+    //发送响应头
+    private void sendHeaders() throws IOException {
         println("Content-Type: text/html");
         println("Content-Length: "+contentFile.length());
         println("");
-        //发送响应正文
-        FileInputStream fis = new FileInputStream(contentFile);
-        OutputStream out = socket.getOutputStream();
-        byte[] data = new byte[1024*10];//10kb
-        int len;//记录每次实际读取到的字节数
-        while((len = fis.read(data))!=-1){
-            out.write(data,0,len);
+    }
+    //发送响应正文
+    private void sendContent() throws IOException {
+        try(
+            FileInputStream fis = new FileInputStream(contentFile);
+        ) {
+            OutputStream out = socket.getOutputStream();
+            byte[] data = new byte[1024 * 10];//10kb
+            int len;//记录每次实际读取到的字节数
+            while ((len = fis.read(data)) != -1) {
+                out.write(data, 0, len);
+            }
         }
     }
 
