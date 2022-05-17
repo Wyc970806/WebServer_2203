@@ -109,7 +109,6 @@ public class HttpServletResponse {
 
     public void setContentFile(File contentFile) {
         this.contentFile = contentFile;
-
         String contentType = null;
         try {
             //Files的该方法用于分析参数传入的文件对应的Content-Type的值
@@ -121,6 +120,13 @@ public class HttpServletResponse {
         if(contentType != null) {
             addHeader("Content-Type", contentType);
         }
+
+//        try {
+//            addHeader("Content-Type",Files.probeContentType(contentFile.toPath()));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
         addHeader("Content-Length",contentFile.length()+"");
 
     }
