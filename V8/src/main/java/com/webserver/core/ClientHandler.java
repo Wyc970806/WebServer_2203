@@ -36,20 +36,18 @@ public class ClientHandler implements Runnable{
             File staticDir = new File(rootDir,"static");
             File file = new File(staticDir,path);
 
-            int statusCode;//状态代码
-            String statusReason;//状态描述
+
             if(file.isFile()){//file表示的是否为一个文件
-                statusCode = 200;
-                statusReason = "OK";
+                response.setContentFile(file);
 
             }else{//file表示的是一个目录或file表示的路径并不存在
-                statusCode = 404;
-                statusReason = "NotFound";
+                response.setStatusCode(404);
+                response.setStatusReason("NotFound");
                 file = new File(staticDir,"/root/404.html");
+                response.setContentFile(file);
             }
 
             //3 发送响应
-
             response.response();
 
             System.out.println("响应发送完毕!!!!!!!!!!!!!!!!");
