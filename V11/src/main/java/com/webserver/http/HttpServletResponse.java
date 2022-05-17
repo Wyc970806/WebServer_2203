@@ -109,4 +109,8 @@ public class HttpServletResponse {
     public void setContentFile(File contentFile) {
         this.contentFile = contentFile;
     }
+
+    public void addHeader(String name,String value){
+        this.headers.put(name,value);
+    }
 }

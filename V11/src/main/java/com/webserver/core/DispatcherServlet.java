@@ -35,12 +35,18 @@ public class DispatcherServlet {
 
         if(file.isFile()){//file表示的是否为一个文件
             response.setContentFile(file);
+            response.addHeader("Content-Type","text/html");
+            response.addHeader("Content-Length",file.length()+"");
 
         }else{//file表示的是一个目录或file表示的路径并不存在
             response.setStatusCode(404);
             response.setStatusReason("NotFound");
             file = new File(staticDir,"/root/404.html");
             response.setContentFile(file);
+            response.addHeader("Content-Type","text/html");
+            response.addHeader("Content-Length",file.length()+"");
         }
+
+        response.addHeader("Server","WebServer");
     }
 }
