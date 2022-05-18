@@ -13,7 +13,7 @@ import java.nio.file.Files;
  */
 public class DispatcherServlet {
     private static File rootDir;
-    private static File staticDir;
+    public static File staticDir;
     static {
         try {
             rootDir = new File(

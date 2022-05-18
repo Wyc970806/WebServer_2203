@@ -1,5 +1,6 @@
 package com.webserver.controller;
 
+import com.webserver.core.DispatcherServlet;
 import com.webserver.entity.User;
 import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
@@ -47,11 +48,16 @@ public class UserController {
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
         ) {
            oos.writeObject(user);
+
+           File file = new File(DispatcherServlet.staticDir,"/myweb/reg_success.html");
+           response.setContentFile(file);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         //3设置response的正文文件为注册结果页面
+
     }
 }
 
