@@ -41,7 +41,7 @@ public class DispatcherServlet {
             就可以断定这个请求是注册页面表单提交的请求了，于是我们就可以完成注册业务了。
          */
         if("/myweb/reg".equals(path)){
-
+            System.out.println("开始处理用户注册!!!!!!!!!!!!!!!!!!!!");
         }else {
             File file = new File(staticDir, path);
             if (file.isFile()) {//file表示的是否为一个文件
