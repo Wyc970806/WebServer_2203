@@ -26,7 +26,7 @@ public class HttpServletRequest {
     private Map<String,String> headers = new HashMap<>();
 
 
-    public HttpServletRequest(Socket socket) throws IOException {
+    public HttpServletRequest(Socket socket) throws IOException, EmptyRequestException {
         this.socket = socket;
         //解析请求行
         parseRequestLine();
@@ -40,8 +40,11 @@ public class HttpServletRequest {
     /**
      * 解析请求行
      */
-    private void parseRequestLine() throws IOException {
+    private void parseRequestLine() throws IOException, EmptyRequestException {
         String line = readLine();
+        if(line.isEmpty()){//如果请求行没有内容，则说明本次为空请求
+            throw new EmptyRequestException();
+        }
         System.out.println("请求行内容:"+line);
         //将请求行按照空格拆分为三部分，并分别用上述三个变量保存
         String[] data = line.split("\\s");

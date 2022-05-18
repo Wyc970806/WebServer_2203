@@ -1,5 +1,6 @@
 package com.webserver.core;
 
+import com.webserver.http.EmptyRequestException;
 import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
 
@@ -35,6 +36,8 @@ public class ClientHandler implements Runnable{
             response.response();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (EmptyRequestException e) {
+
         } finally {
             try {
                 //一问一答后断开连接。HTTP协议要求。
