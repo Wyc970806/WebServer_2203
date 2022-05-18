@@ -28,6 +28,7 @@ public class DispatcherServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response){
         /*
+            /myweb/index.html
             /myweb/reg?username=fanchuanqi&password=123456&nickname=chuanqi&age=22
          */
 //        String path = request.getUri();//由于抽象路径可能含有参数，且参数值不是固定的(受用户输入信息影响)。因此不能再用它判断请求的行为了
