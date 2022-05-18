@@ -106,13 +106,7 @@ public class HttpServletRequest {
 //                }
                 parameters.put(arr[0],arr.length>1?arr[1]:"");
             }
-
-
         }
-
-
-
-
 
         System.out.println("requestURI:"+requestURI);
         System.out.println("queryString:"+queryString);

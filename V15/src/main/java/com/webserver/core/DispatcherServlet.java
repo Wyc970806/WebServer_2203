@@ -1,5 +1,6 @@
 package com.webserver.core;
 
+import com.webserver.controller.UserController;
 import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
 
@@ -42,6 +43,9 @@ public class DispatcherServlet {
          */
         if("/myweb/reg".equals(path)){
             System.out.println("开始处理用户注册!!!!!!!!!!!!!!!!!!!!");
+            UserController controller = new UserController();
+            controller.reg(request,response);
+
         }else {
             File file = new File(staticDir, path);
             if (file.isFile()) {//file表示的是否为一个文件

@@ -66,14 +66,16 @@ public class HttpServletResponse {
     }
     //发送响应正文
     private void sendContent() throws IOException {
-        try(
-            FileInputStream fis = new FileInputStream(contentFile);
-        ) {
-            OutputStream out = socket.getOutputStream();
-            byte[] data = new byte[1024 * 10];//10kb
-            int len;//记录每次实际读取到的字节数
-            while ((len = fis.read(data)) != -1) {
-                out.write(data, 0, len);
+        if(contentFile!=null) {
+            try (
+                    FileInputStream fis = new FileInputStream(contentFile);
+            ) {
+                OutputStream out = socket.getOutputStream();
+                byte[] data = new byte[1024 * 10];//10kb
+                int len;//记录每次实际读取到的字节数
+                while ((len = fis.read(data)) != -1) {
+                    out.write(data, 0, len);
+                }
             }
         }
     }
