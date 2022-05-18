@@ -72,7 +72,6 @@ public class HttpServletRequest {
             例如:
             不含有参数的:/myweb/reg.html
             含有参数的:/myweb/reg?username=fanchuanqi&password=123456&nickname=chuanqi&age=22
-
             处理方式:
             1:若不含有参数，则直接将uri的值赋值给requestURI
             2:若含有参数
@@ -85,6 +84,39 @@ public class HttpServletRequest {
 
               允许页面输入框空着，这种情况该参数的值为空字符串存入parameters即可
          */
+        /*
+            /myweb/reg.html
+            /myweb/reg?
+
+            /myweb/reg?username=fanchuanqi&password=123456&nickname=chuanqi&age=22
+         */
+        String[] data = uri.split("\\?");
+        requestURI = data[0];
+        if(data.length>1){//按照?拆分后，数组有第二个元素，说明这个uri是含有参数部分的
+            queryString = data[1];
+            //将参数部分按照"&"拆分出每一组参数：{username=fanchuanqi, password=123456, nickname=chuanqi, age=22}
+            String[] paraArr = queryString.split("&");
+            for(String para : paraArr){
+                //将每一组参数按照"="拆分为参数名和参数值:{username, fanchuanqi}
+                String[] arr = para.split("=");
+//                if(arr.length>1) {
+//                    parameters.put(arr[0], arr[1]);
+//                }else{
+//                    parameters.put(arr[0], "");
+//                }
+                parameters.put(arr[0],arr.length>1?arr[1]:"");
+            }
+
+
+        }
+
+
+
+
+
+        System.out.println("requestURI:"+requestURI);
+        System.out.println("queryString:"+queryString);
+        System.out.println("parameters:"+parameters);
     }
 
     /**
