@@ -5,10 +5,7 @@ import com.webserver.entity.User;
 import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 /**
  * 处理与用户相关操作的业务类
@@ -20,6 +17,41 @@ public class UserController {
         if(!userDir.exists()){
             userDir.mkdirs();
         }
+    }
+
+    /**
+     * 处理用户登录业务
+     * @param request
+     * @param response
+     */
+    public void login(HttpServletRequest request,HttpServletResponse response){
+        //1通过request获取表单信息
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        if(username.isEmpty()||password.isEmpty()){//如果没有输入内容则提示输入信息有误
+            File file = new File(DispatcherServlet.staticDir,"/myweb/login_info_error.html");
+            response.setContentFile(file);
+            return;
+        }
+
+        //2处理登录
+        File userFile = new File(userDir,username+".obj");
+        if(userFile.exists()){//该文件存在，才说明用户名输入对了
+            //将该用户注册信息读取回来，用于比对密码
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(userFile));){
+                User user = (User)ois.readObject();
+                if(user.getPassword().equals(password)){//密码正确，登录成功
+                    File file = new File(DispatcherServlet.staticDir,"/myweb/login_success.html");
+                    response.setContentFile(file);
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        //只要执行到这里，就说明登录失败了1:文件不存在(用户名不对) 2:密码不对
+        File file = new File(DispatcherServlet.staticDir,"/myweb/login_fail.html");
+        response.setContentFile(file);
     }
 
     /**
