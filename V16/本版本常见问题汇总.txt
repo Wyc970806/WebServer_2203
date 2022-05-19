@@ -29,6 +29,15 @@
       IDEA编译后有可能存在没有将resources下对应的文件复制到target/classes下，导致执行是找不到该文件。
       需要手动将resources下对应的文件复制过去即可。
 
+4:在DispatcherServlet中代码:
+    ...
+    else {
+         File file = new File(staticDir, path); <=======这里出现空指针异常！！！！
+         if (file.isFile()) {//file表示的是否为一个文件
+              response.setContentFile(file);
+    ...
+
+原因:说明path是null，意味着我们在解析请求时parseUri方法解析代码的逻辑不正确导致的。才会出现requestURI属性为null
 
 
 
