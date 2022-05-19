@@ -3,6 +3,7 @@ package com.webserver.http;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -131,7 +132,7 @@ public class HttpServletRequest {
     /**
      * 解析消息正文
      */
-    private void parseContent(){
+    private void parseContent() throws IOException {
         /*
             1:判断请求方式是否为POST请求。因为POST请求会带着正文内容
             2:获取消息头:Content-Length,根据该值得知正文的长度(总共多少个字节)
@@ -145,7 +146,26 @@ public class HttpServletRequest {
          */
         //1
         if("POST".equalsIgnoreCase(method)){
+            //2
+            String value = headers.get("Content-Length");
+            if(value!=null){
+                int contentLength = Integer.parseInt(value);//将正文长度转换为一个int值
+                byte[] contentData = new byte[contentLength];
+                //3
+                InputStream in = socket.getInputStream();
+                in.read(contentData);//将正文内容读取到字节数组上
 
+                //4
+                String contentType = headers.get("Content-Type");
+                if("application/x-www-form-urlencoded".equals(contentType)){//判断类型是否为form表单提交的数据
+                    //5
+                    String line = new String(contentData, StandardCharsets.ISO_8859_1);
+                    System.out.println("正文内容:"+line);
+                }
+//                else if("".equals(contentType)){ 判断其他类型进行正文处理
+//
+//                }
+            }
         }
 
     }
