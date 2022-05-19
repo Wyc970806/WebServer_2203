@@ -35,6 +35,16 @@ public class UserController {
         String nickname = request.getParameter("nickname");
         String ageStr = request.getParameter("age");
         System.out.println(username+","+password+","+nickname+","+ageStr);
+        if(username.isEmpty()||password.isEmpty()||nickname.isEmpty()||ageStr.isEmpty()||
+            !ageStr.matches("[0-9]+")){
+            //响应一个错误页面给用户
+            File file = new File(DispatcherServlet.staticDir,"/myweb/reg_info_error.html");
+            response.setContentFile(file);
+            return;
+        }
+
+
+
         int age = Integer.parseInt(ageStr);//将年龄转换为int值
 
         //2将该用户信息保存
