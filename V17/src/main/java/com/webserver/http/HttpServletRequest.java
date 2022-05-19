@@ -68,50 +68,25 @@ public class HttpServletRequest {
      *  进一步解析uri
      */
     private void parseUri(){
-        /*
-            uri是有两种情况的，1:不含有参数的 2:含有参数的
-            例如:
-            不含有参数的:/myweb/reg.html
-            含有参数的:/myweb/reg?username=fanchuanqi&password=123456&nickname=chuanqi&age=22
-            处理方式:
-            1:若不含有参数，则直接将uri的值赋值给requestURI
-            2:若含有参数
-              2.1:先将uri按照"?"拆分为请求部分和参数部分
-                  将请求部分赋值给requestURI
-                  将参数部分赋值给queryString
-              2.2:再将参数部分按照"&"拆分出每一组参数
-                  每组参数再按照"="拆分为参数名和参数值
-                  并将参数名作为key，参数值作为value保存到parameters这个Map中
-
-              允许页面输入框空着，这种情况该参数的值为空字符串存入parameters即可
-         */
-        /*
-            /myweb/reg.html
-            /myweb/reg?
-
-            /myweb/reg?username=fanchuanqi&password=123456&nickname=chuanqi&age=22
-         */
         String[] data = uri.split("\\?");
         requestURI = data[0];
         if(data.length>1){//按照?拆分后，数组有第二个元素，说明这个uri是含有参数部分的
             queryString = data[1];
-            //将参数部分按照"&"拆分出每一组参数：{username=fanchuanqi, password=123456, nickname=chuanqi, age=22}
-            String[] paraArr = queryString.split("&");
-            for(String para : paraArr){
-                //将每一组参数按照"="拆分为参数名和参数值:{username, fanchuanqi}
-                String[] arr = para.split("=");
-//                if(arr.length>1) {
-//                    parameters.put(arr[0], arr[1]);
-//                }else{
-//                    parameters.put(arr[0], "");
-//                }
-                parameters.put(arr[0],arr.length>1?arr[1]:"");
-            }
+            parseParameters(queryString);
         }
 
         System.out.println("requestURI:"+requestURI);
         System.out.println("queryString:"+queryString);
         System.out.println("parameters:"+parameters);
+    }
+
+    private void parseParameters(String line){
+        String[] paraArr = line.split("&");
+        for(String para : paraArr){
+            //将每一组参数按照"="拆分为参数名和参数值:{username, fanchuanqi}
+            String[] arr = para.split("=");
+            parameters.put(arr[0],arr.length>1?arr[1]:"");
+        }
     }
 
     /**
@@ -155,12 +130,14 @@ public class HttpServletRequest {
                 InputStream in = socket.getInputStream();
                 in.read(contentData);//将正文内容读取到字节数组上
 
-                //4
+                //4   16:05回来
                 String contentType = headers.get("Content-Type");
                 if("application/x-www-form-urlencoded".equals(contentType)){//判断类型是否为form表单提交的数据
                     //5
                     String line = new String(contentData, StandardCharsets.ISO_8859_1);
                     System.out.println("正文内容:"+line);
+                    parseParameters(line);
+
                 }
 //                else if("".equals(contentType)){ 判断其他类型进行正文处理
 //
