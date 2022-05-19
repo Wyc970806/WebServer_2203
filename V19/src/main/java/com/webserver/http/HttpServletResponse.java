@@ -147,6 +147,8 @@ public class HttpServletResponse {
     public void sendRedirect(String uri){
          statusCode = 302;
          statusReason = "Moved Temporarily";
+
+         addHeader("Location",uri);//Location:位置
     }
 
 }

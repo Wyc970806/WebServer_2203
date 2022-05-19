@@ -1,6 +1,5 @@
 package com.webserver.controller;
 
-import com.webserver.core.DispatcherServlet;
 import com.webserver.entity.User;
 import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
@@ -29,8 +28,7 @@ public class UserController {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if(username.isEmpty()||password.isEmpty()){//如果没有输入内容则提示输入信息有误
-            File file = new File(DispatcherServlet.staticDir,"/myweb/login_info_error.html");
-            response.setContentFile(file);
+            response.sendRedirect("/myweb/login_info_error.html");
             return;
         }
 
@@ -41,8 +39,7 @@ public class UserController {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(userFile));){
                 User user = (User)ois.readObject();
                 if(user.getPassword().equals(password)){//密码正确，登录成功
-                    File file = new File(DispatcherServlet.staticDir,"/myweb/login_success.html");
-                    response.setContentFile(file);
+                    response.sendRedirect("/myweb/login_success.html");
                     return;
                 }
             } catch (Exception e) {
@@ -50,8 +47,7 @@ public class UserController {
             }
         }
         //只要执行到这里，就说明登录失败了1:文件不存在(用户名不对) 2:密码不对
-        File file = new File(DispatcherServlet.staticDir,"/myweb/login_fail.html");
-        response.setContentFile(file);
+        response.sendRedirect("/myweb/login_fail.html");
     }
 
     /**
@@ -71,8 +67,7 @@ public class UserController {
         if(username.isEmpty()||password.isEmpty()||nickname.isEmpty()||ageStr.isEmpty()||
             !ageStr.matches("[0-9]+")){
             //响应一个错误页面给用户
-            File file = new File(DispatcherServlet.staticDir,"/myweb/reg_info_error.html");
-            response.setContentFile(file);
+            response.sendRedirect("/myweb/reg_info_error.html");
             return;
         }
 
@@ -89,8 +84,7 @@ public class UserController {
 
         //判断该用户是否已经存在，若存在则响应页面:/myweb/have_user.html  页面居中一行字:该用户已存在，请重新注册
         if(userFile.exists()){
-            File file = new File(DispatcherServlet.staticDir,"/myweb/have_user.html");
-            response.setContentFile(file);
+            response.sendRedirect("/myweb/have_user.html");
             return;
         }
 
@@ -102,9 +96,7 @@ public class UserController {
         ) {
            oos.writeObject(user);
 
-           File file = new File(DispatcherServlet.staticDir,"/myweb/reg_success.html");
-           response.setContentFile(file);
-
+           response.sendRedirect("/myweb/reg_success.html");
         } catch (IOException e) {
             e.printStackTrace();
         }
