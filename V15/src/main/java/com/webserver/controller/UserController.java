@@ -35,6 +35,7 @@ public class UserController {
         String nickname = request.getParameter("nickname");
         String ageStr = request.getParameter("age");
         System.out.println(username+","+password+","+nickname+","+ageStr);
+
         if(username.isEmpty()||password.isEmpty()||nickname.isEmpty()||ageStr.isEmpty()||
             !ageStr.matches("[0-9]+")){
             //响应一个错误页面给用户
@@ -53,6 +54,16 @@ public class UserController {
          */
         User user = new User(username,password,nickname,age);
         File userFile = new File(userDir,username+".obj");
+
+        //判断该用户是否已经存在，若存在则响应页面:/myweb/have_user.html  页面居中一行字:该用户已存在，请重新注册
+        if(userFile.exists()){
+            File file = new File(DispatcherServlet.staticDir,"/myweb/have_user.html");
+            response.setContentFile(file);
+            return;
+        }
+
+
+
         try(
                 FileOutputStream fos = new FileOutputStream(userFile);
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
