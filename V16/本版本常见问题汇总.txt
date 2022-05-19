@@ -1,0 +1,36 @@
+1:在页面上点击注册或登录按钮，没反应。
+可能的情况:
+    1.1:表单action属性名单词拼写错误
+    1.2:提交按钮类型指定的不对<input type="submit" value="...">
+    1.3:表单action指定的值错误，以注册页面为例:
+        正确的:<form action="/myweb/reg">
+        错误的:<form action="/myweb/reg.html">
+
+2:可以正常访问页面。但是像注册或登录页面，点击按钮进行注册或登录时，出现404页面
+可能的情况:
+    2.1:页面表单上的action的值不是以"/"开始的。
+       正确的:<form action="/myweb/reg">
+       错误的:<form action="myweb/reg">
+       这会导致与DispatcherServlet判定路径不一致
+
+    2.2:action的值与DispatcherServlet上分支判断的path的值不一致导致的
+        页面上:<form action="/myweb/reg">
+        DispatcherServlet上分支判断:
+        if("myweb/reg".equals(path)){   <==字符串"myweb/reg"缺少了"/".总之拼写错误
+            ...
+        }
+
+3:服务端执行时报错:java.io.FileNotFoundException: xxxx/xxxx.html(系统找不到指定的文件)
+  3.1:找到设置该页面的位置，查看new File的时候第一个参数DispatcherServlet.staticDir这个参数传入了没有
+      没有传入会导致上述问题
+
+  3.2:在resources目录对应的位置有该页面文件
+      实际我们应当关注的是target/classes/static下有没有对应的文件。
+      IDEA编译后有可能存在没有将resources下对应的文件复制到target/classes下，导致执行是找不到该文件。
+      需要手动将resources下对应的文件复制过去即可。
+
+
+
+
+
+
