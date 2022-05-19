@@ -130,7 +130,7 @@ public class HttpServletRequest {
                 InputStream in = socket.getInputStream();
                 in.read(contentData);//将正文内容读取到字节数组上
 
-                //4   16:05回来
+                //4
                 String contentType = headers.get("Content-Type");
                 if("application/x-www-form-urlencoded".equals(contentType)){//判断类型是否为form表单提交的数据
                     //5
