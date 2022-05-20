@@ -38,6 +38,8 @@ public class HttpServletResponse {
      *  将当前响应对象内容以标准的响应格式发送给客户端
      */
     public void response() throws IOException {
+        //发送前的准备工作
+        sendBefore();
         //发送状态行
         sendStatusLine();
         //发送响应头
@@ -45,6 +47,17 @@ public class HttpServletResponse {
         //发送响应正文
         sendContent();
     }
+    //发送响应前的准备工作
+    private void sendBefore(){
+        //通过baos提取动态数据，用于自动添加响应头Content-Length
+        if(baos!=null){
+            contentData = baos.toByteArray();
+        }
+        if(contentData!=null){//动态数据的数组不为空，说明有动态数据
+            addHeader("Content-Length",contentData.length+"");
+        }
+    }
+
     //发送状态行
     private void sendStatusLine() throws IOException {
         println("HTTP/1.1" + " " + statusCode + " " + statusReason);
@@ -69,7 +82,10 @@ public class HttpServletResponse {
     }
     //发送响应正文
     private void sendContent() throws IOException {
-        if(contentFile!=null) {
+        if(contentData!=null){
+            OutputStream out = socket.getOutputStream();
+            out.write(contentData);
+        }else if(contentFile!=null) {
             try (
                     FileInputStream fis = new FileInputStream(contentFile);
             ) {
