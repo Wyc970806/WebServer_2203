@@ -26,7 +26,6 @@ public class HttpServletResponse {
     //响应正文相关信息
     private File contentFile;//正文文件
     private byte[] contentData;//以一个字节数组内容作为正文
-
     private ByteArrayOutputStream baos;//也可以将通过这个流写出的所有字节作为正文
 
 
@@ -182,13 +181,6 @@ public class HttpServletResponse {
     }
 
     public PrintWriter getWriter(){
-//        return new PrintWriter(
-//                new BufferedWriter(
-//                        new OutputStreamWriter(
-//                                getOutputStream(),StandardCharsets.UTF_8
-//                        )
-//                ),true
-//        );
         OutputStream out = getOutputStream();//baos
         OutputStreamWriter osw = new OutputStreamWriter(out,StandardCharsets.UTF_8);
         BufferedWriter bw = new BufferedWriter(osw);
