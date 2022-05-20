@@ -49,7 +49,6 @@ public class UserController {
         }
 
 
-
         /*
             2生成一个HTML页面(动态页面)并包含所有用户数据
             动态页面:每次访问该页面时，页面都是由程序临时生成的。
@@ -58,10 +57,45 @@ public class UserController {
             动态资源:现用现生成的资源
             静态资源:事先准备好，写死在文件里的。
          */
+        File file = new File("./users.html");//生成的页面文件
+        try {
+            PrintWriter pw = new PrintWriter(file);
+            pw.println("<!DOCTYPE html>");
+            pw.println("<html lang=\"en\">");
+            pw.println("<head>");
+            pw.println("<meta charset=\"UTF-8\">");
+            pw.println("<title>用户列表</title>");
+            pw.println("</head>");
+            pw.println("<body>");
+            pw.println("<center>");
+            pw.println("<h1>用户列表</h1>");
+            pw.println("<table border=\"1\">");
+            pw.println("<tr>");
+            pw.println("<td>用户名</td>");
+            pw.println("<td>密码</td>");
+            pw.println("<td>昵称</td>");
+            pw.println("<td>年龄</td>");
+            pw.println("</tr>");
+            for(User user : userList) {
+                pw.println("<tr>");
+                pw.println("<td>"+ user.getUsername()+"</td>");
+                pw.println("<td>"+ user.getPassword()+"</td>");
+                pw.println("<td>"+ user.getNickname()+"</td>");
+                pw.println("<td>"+ user.getAge()+"</td>");
+                pw.println("</tr>");
+            }
+            pw.println("</table>");
+            pw.println("</center>");
+            pw.println("</body>");
+            pw.println("</html>");
+            pw.close();
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         //3将生成的动态页面通过响应对象发送给浏览器
-
+        response.setContentFile(file);
 
     }
 
