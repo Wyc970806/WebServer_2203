@@ -173,7 +173,6 @@ public class HttpServletResponse {
 //                        )
 //                ),true
 //        );
-
         OutputStream out = getOutputStream();//baos
         OutputStreamWriter osw = new OutputStreamWriter(out,StandardCharsets.UTF_8);
         BufferedWriter bw = new BufferedWriter(osw);
@@ -182,6 +181,9 @@ public class HttpServletResponse {
 
     }
 
+    public void setContentType(String value){
+        addHeader("Content-Type",value);
+    }
 
 }
 

@@ -50,16 +50,11 @@ public class UserController {
 
         /*
             2生成一个HTML页面(动态页面)并包含所有用户数据
-            动态页面:每次访问该页面时，页面都是由程序临时生成的。
-            静态页面:页面是事先准备好的，写死在文件里的。
-
-            动态资源:现用现生成的资源
-            静态资源:事先准备好，写死在文件里的。
          */
-        File file = new File("./users.html");//生成的页面文件
-        try (
-                PrintWriter pw = new PrintWriter(file);
-        ){
+            //添加响应头，用于将来告知浏览器该动态数据是一个html页面
+            response.setContentType("text/html");
+
+            PrintWriter pw = response.getWriter();
             pw.println("<!DOCTYPE html>");
             pw.println("<html lang=\"en\">");
             pw.println("<head>");
@@ -89,12 +84,8 @@ public class UserController {
             pw.println("</body>");
             pw.println("</html>");
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
-        //3将生成的动态页面通过响应对象发送给浏览器
-        response.setContentFile(file);
+
 
     }
 
