@@ -5,6 +5,8 @@ import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 处理与用户相关操作的业务类
@@ -24,6 +26,42 @@ public class UserController {
      * @param response
      */
     public void showAllUser(HttpServletRequest request,HttpServletResponse response){
+        //1将users目录下的所有obj文件进行反序列化，得到所有的注册用户
+        List<User> userList = new ArrayList<>();
+        //1.1获取users目录下的所有obj文件(文件过滤器)
+        //1.2遍历每一个obj文件并利用对象输入流进行反序列化
+        //1.3将反序列化的对象存入userList备用
+        File[] users = userDir.listFiles(f->f.getName().endsWith(".obj"));
+        for(File userFile : users){
+            try (
+                    ObjectInputStream ois = new ObjectInputStream(
+                            new FileInputStream(
+                                    userFile
+                            )
+                    )
+            ){
+               User user = (User)ois.readObject();
+               userList.add(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+        /*
+            2生成一个HTML页面(动态页面)并包含所有用户数据
+            动态页面:每次访问该页面时，页面都是由程序临时生成的。
+            静态页面:页面是事先准备好的，写死在文件里的。
+
+            动态资源:现用现生成的资源
+            静态资源:事先准备好，写死在文件里的。
+         */
+
+
+        //3将生成的动态页面通过响应对象发送给浏览器
+
 
     }
 
