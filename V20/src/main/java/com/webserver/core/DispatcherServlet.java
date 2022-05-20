@@ -1,5 +1,6 @@
 package com.webserver.core;
 
+import com.webserver.controller.ArticleController;
 import com.webserver.controller.UserController;
 import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
@@ -50,6 +51,10 @@ public class DispatcherServlet {
         }else if("/myweb/login".equals(path)){
             UserController controller = new UserController();
             controller.login(request,response);
+
+        }else if("/myweb/writeArticle".equals(path)){
+            ArticleController controller = new ArticleController();
+            controller.writeArticle(request,response);
 
         }else {
             File file = new File(staticDir, path);
