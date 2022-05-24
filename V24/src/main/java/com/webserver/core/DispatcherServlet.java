@@ -43,12 +43,12 @@ public class DispatcherServlet {
               将当前DispatcherServlet的service方法结束(目的是不走下面的分支了)
          */
         try {
-            File dir = new File(
-                    DispatcherServlet.class.getClassLoader()
-                            .getResource("./com/webserver/controller").toURI()
-            );
-
-            Class.forName("com.webserver.controller."+类名);
+//            File dir = new File(
+//                    DispatcherServlet.class.getClassLoader()
+//                            .getResource("./com/webserver/controller").toURI()
+//            );
+//
+//            Class.forName("com.webserver.controller."+类名);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
