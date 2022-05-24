@@ -1,5 +1,7 @@
 package com.webserver.core;
 
+import com.webserver.annotation.Controller;
+import com.webserver.annotation.RequestMapping;
 import com.webserver.controller.ArticleController;
 import com.webserver.controller.ToolsController;
 import com.webserver.controller.UserController;
@@ -7,6 +9,7 @@ import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 
@@ -43,13 +46,50 @@ public class DispatcherServlet {
               将当前DispatcherServlet的service方法结束(目的是不走下面的分支了)
          */
         try {
-//            File dir = new File(
-//                    DispatcherServlet.class.getClassLoader()
-//                            .getResource("./com/webserver/controller").toURI()
-//            );
-//
-//            Class.forName("com.webserver.controller."+类名);
-        } catch (URISyntaxException e) {
+            File dir = new File(
+                    DispatcherServlet.class.getClassLoader()
+                            .getResource("./com/webserver/controller").toURI()
+            );
+            //获取com/webserver/controller目录下所有名字以.class结尾的文件(获取所有的字节码文件)
+            File[] files = dir.listFiles(f->f.getName().endsWith(".class"));
+            //遍历每一个字节码文件
+            for(File file : files){
+                //获取字节码文件名
+                String fileName = file.getName();
+                //根据字节码文件名获取类名
+                String className = fileName.substring(0,fileName.indexOf("."));
+                //加载该类的类对象
+                Class cls = Class.forName("com.webserver.controller." + className);
+                //判断该类是否被注解@Controller标注了
+                if(cls.isAnnotationPresent(Controller.class)){
+                    //获取该Controller中所有的方法
+                    Method[] methods = cls.getDeclaredMethods();
+                    //遍历每一个方法
+                    for(Method method : methods){
+                        //该方法是否被注解@RequestMapping标注了
+                        if(method.isAnnotationPresent(RequestMapping.class)){
+                            //获取该方法上的注解@RequestMapping
+                            RequestMapping rm = method.getAnnotation(RequestMapping.class);
+                            //从注解上获取参数，用于匹配是否是当前请求
+                            String value = rm.value();
+                            //判断本次请求与该注解参数的请求路径是否一致，若一致则说明就是该方法处理这个请求
+                            if(path.equals(value)){
+                                //实例化该Controller
+                                Object controller = cls.newInstance();
+                                //执行该方法处理该业务
+                                method.invoke(controller,request,response);
+                                //处理业务完毕后直接return，避免执行下面的后续逻辑
+                                return;
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
