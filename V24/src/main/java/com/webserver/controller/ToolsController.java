@@ -1,5 +1,7 @@
 package com.webserver.controller;
 
+import com.webserver.annotation.Controller;
+import com.webserver.annotation.RequestMapping;
 import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
 import qrcode.QRCodeUtil;
@@ -10,7 +12,9 @@ import java.io.FileOutputStream;
  *  Tool 工具
  *  生成二维码，验证码等的一个业务处理类
  */
+@Controller
 public class ToolsController {
+    @RequestMapping("/myweb/createQR")
     public void createQR(HttpServletRequest request, HttpServletResponse response){
         String line = request.getParameter("content");
         try {
