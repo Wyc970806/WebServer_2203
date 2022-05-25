@@ -4,11 +4,10 @@
 
 实现:
 1:在com.webserver.core包下新建类HandlerMapping
-2:定义静态属性Map requestMapping
+2:定义静态属性Map map
   key:请求路径
   value:MethodMapping(内部类),记录处理该请求的方法对象和该方法所属对象
-3:在静态块中初始化,完成原DispatcherServlet扫描controller包的工作并初始化
-  requestMapping
-4:提供静态方法:getRequestMapping可根据请求路径获取处理该请求的方法
+3:在静态块中初始化,完成原DispatcherServlet扫描controller包的工作并初始化map
+4:提供静态方法:getMethod可根据请求路径获取处理该请求的方法
 5:在DispatcherServlet中处理业务时只需要根据请求获取对应的处理方法利用反射
   机制调用即可
