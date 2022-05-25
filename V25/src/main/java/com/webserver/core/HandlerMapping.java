@@ -69,6 +69,14 @@ public class HandlerMapping {
         }
     }
 
+    /**
+     * 根据给定的请求路径获取处理该请求的Controller以及对应的处理方法
+     * @param path
+     * @return
+     */
+    public static MethodMapping getMethod(String path){
+        return map.get(path);
+    }
 
     public static void main(String[] args) {
         System.out.println(map);
